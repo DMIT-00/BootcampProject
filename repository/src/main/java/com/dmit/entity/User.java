@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -20,10 +19,9 @@ import java.util.UUID;
 @Table(name = "t_user")
 public class User {
     @Id
-    @Column(name = "user_id", columnDefinition = "CHAR(36)")
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
-    @Type(type = "uuid-char")
+    @Column(name = "user_id", columnDefinition = "VARCHAR(36)")
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "uuid2")
     private UUID id;
 
     @Column(name = "user_email", unique = true, nullable = false)
