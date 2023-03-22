@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface UserService {
     UserResponseDto addUser(UserRequestDto userRequestDto);
-    List<UserResponseDto> findAllUsersPageable(int page, int size);
+    List<UserResponseDto> findAllUsersPageableSortedBy(int page, int size, String sort);
 }

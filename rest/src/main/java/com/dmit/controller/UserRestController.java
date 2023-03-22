@@ -19,9 +19,8 @@ public class UserRestController {
 
     @GetMapping
     public ResponseEntity<List<UserResponseDto>> getUsers(@RequestParam(value = "page", defaultValue = "0") int page,
-                                                          @RequestParam(value = "size", defaultValue = "10")
-                                                          int size) {
-        List<UserResponseDto> users = userService.findAllUsersPageable(page, size);
+                                                          @RequestParam(value = "size", defaultValue = "10") int size) {
+        List<UserResponseDto> users = userService.findAllUsersPageableSortedBy(page, size, "email");
         if (users.isEmpty())
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
