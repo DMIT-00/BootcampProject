@@ -20,7 +20,7 @@
     <dependencies>
         <dependency>
             <groupId>com.dmit</groupId>
-            <artifactId>rest-api</artifactId>
+            <artifactId>rest</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>

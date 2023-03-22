@@ -21,8 +21,9 @@
 	<modules>
 		<module>application</module>
 		<module>repository</module>
-		<module>rest-api</module>
+		<module>rest</module>
 		<module>service</module>
+		<module>model</module>
 	</modules>
 
 	<properties>
