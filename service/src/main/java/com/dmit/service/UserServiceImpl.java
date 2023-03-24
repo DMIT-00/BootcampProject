@@ -12,6 +12,7 @@ import com.dmit.exception.NotFoundException;
 import com.dmit.mapper.UserRequestMapper;
 import com.dmit.mapper.UserResponseMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -24,6 +25,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@Log4j2
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class UserServiceImpl implements UserService {
     private final UserDao userDao;
@@ -66,7 +68,11 @@ public class UserServiceImpl implements UserService {
 
         user.setRoles(roles);
 
-        return UserResponseMapper.toDto(userDao.save(user));
+        UserResponseDto createdUser = UserResponseMapper.toDto(userDao.save(user));
+
+        log.info("New user created. Id: " + createdUser.getId());
+
+        return createdUser;
     }
 
     @Override
