@@ -32,26 +32,26 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserResponseDto addUser(UserRequestDto userRequestDto) {
-        // TODO: email format check
-        if (userRequestDto.getEmail().length() < 3 || userRequestDto.getEmail().length() > 50)
-            throw new InvalidFieldException("Email should be at least 3 characters and maximum 20 characters!");
+        if (userRequestDto.getEmail() == null || userRequestDto.getEmail().length() > 20 ||
+                !userRequestDto.getEmail().matches("^.+\\@.+\\..+$"))
+            throw new InvalidFieldException("Email error: email format a@b.c, 5-20 length!");
 
-        if (userRequestDto.getFirstName().length() < 1 || userRequestDto.getFirstName().length() > 20)
-            throw new InvalidFieldException("First name should be at least 1 character and maximum 20 characters!");
+        if (userRequestDto.getFirstName() == null || !userRequestDto.getFirstName().matches("^[a-zA-Z]{1,20}$"))
+            throw new InvalidFieldException("First name error: only latin letters, 1-20 length!");
 
-        if (userRequestDto.getLastName().length() < 1 || userRequestDto.getLastName().length() > 40)
-            throw new InvalidFieldException("Last name should be at least 1 character and maximum 40 characters!");
+        if (userRequestDto.getLastName() == null || !userRequestDto.getLastName().matches("^[a-zA-Z]{1,40}$"))
+            throw new InvalidFieldException("Last name error: only latin letters, 1-40 length!");
 
-        if (userRequestDto.getPatronymic().length() < 1 || userRequestDto.getPatronymic().length() > 40)
-            throw new InvalidFieldException("Patronymic should be at least 1 character and maximum 40 characters!");
+        if (userRequestDto.getPatronymic() == null || !userRequestDto.getPatronymic().matches("^[a-zA-Z]{1,40}$"))
+            throw new InvalidFieldException("Patronymic error: only latin letters, 1-40 length!");
 
         if (userDao.existsByEmail(userRequestDto.getEmail()))
-            throw new AlreadyExistsException("User with this email already exists! Email: " + userRequestDto.getEmail());
+            throw new AlreadyExistsException("Email error: already taken! Email: " + userRequestDto.getEmail());
 
         if (userRequestDto.getId() != null && userDao.existsById(userRequestDto.getId()))
-            throw new AlreadyExistsException("User with this id already exists! Id: " + userRequestDto.getId());
+            throw new AlreadyExistsException("Id error: already taken! Id: " + userRequestDto.getId());
 
-        // TODO: more checks
+        // TODO: more checks?
 
         User user = UserRequestMapper.fromDto(userRequestDto);
 
@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
         Set<Role> roles = user.getRoles()
                 .stream()
                 .map(role -> roleDao.findByRoleName(role.getRoleName()).orElseThrow(
-                                () -> new NotFoundException("Role not found! Role: " + role.getRoleName())
+                                () -> new NotFoundException("Role error: role not found! Role: " + role.getRoleName())
                 ))
                 .collect(Collectors.toSet());
 
