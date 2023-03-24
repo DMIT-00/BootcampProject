@@ -10,21 +10,31 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/users")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class UserRestController {
+    private static final String DEFAULT_PAGE_SIZE = "10";
     private final UserService userService;
 
     @GetMapping
     public ResponseEntity<List<UserResponseDto>> getUsers(@RequestParam(value = "page", defaultValue = "0") int page,
-                                                          @RequestParam(value = "size", defaultValue = "10") int size) {
+                                                          @RequestParam(value = "size", defaultValue = DEFAULT_PAGE_SIZE)
+                                                          int size) {
         List<UserResponseDto> users = userService.findAllUsersPageableSortedBy(page, size, "email");
         if (users.isEmpty())
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
         return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserResponseDto> getUser(@PathVariable("id") UUID id) {
+        UserResponseDto user = userService.findUserById(id);
+
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @PostMapping

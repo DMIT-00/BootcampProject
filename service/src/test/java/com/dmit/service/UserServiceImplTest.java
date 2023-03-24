@@ -479,7 +479,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void testFindAllUsersPageableSortedBy() {
+    void testFindAllUsersPageableSortedByShouldCallDao() {
         // Given
         List<User> userList = Arrays.asList(
                 new User(UUID.randomUUID(), "test1@email.com", "Alex", "Smith", "John", new HashSet<>()),
@@ -495,6 +495,55 @@ class UserServiceImplTest {
         assertEquals(2, userResponseDtoList.size());
         assertEquals("Alex", userResponseDtoList.get(0).getFirstName());
         assertEquals("Doe", userResponseDtoList.get(1).getLastName());
+    }
+
+    @Test
+    void testFindUserByIdShouldCallDao() {
+        // Given
+        User user = new User(
+                UUID.randomUUID(),
+                "test1@email.com",
+                "Alex",
+                "Smith",
+                "John",
+                new HashSet<>()
+        );
+
+        when(userDao.findById(user.getId())).thenReturn(Optional.of(user));
+
+        // When
+        UserResponseDto userResponseDto = userService.findUserById(user.getId());
+
+        // Then
+        verify(userDao, times(1)).findById(user.getId());
+        assertEquals(user.getId(), userResponseDto.getId());
+        assertEquals(user.getEmail(), userResponseDto.getEmail());
+        assertEquals(user.getFirstName(), userResponseDto.getFirstName());
+        assertEquals(user.getLastName(), userResponseDto.getLastName());
+        assertEquals(user.getPatronymic(), userResponseDto.getPatronymic());
+    }
+
+    @Test
+    void testFindUserByIdShouldThrow() {
+        // Given
+        User user = new User(
+                UUID.randomUUID(),
+                "test1@email.com",
+                "Alex",
+                "Smith",
+                "John",
+                new HashSet<>()
+        );
+
+        when(userDao.findById(user.getId())).thenReturn(Optional.empty());
+
+        // When
+        // Then
+        NotFoundException exception = assertThrows(
+                NotFoundException.class,
+                () -> userService.findUserById(user.getId())
+        );
+        assertEquals("User not found! ID: " + user.getId(), exception.getMessage());
     }
 
 }

@@ -4,6 +4,7 @@ import com.dmit.dto.UserRequestDto;
 import com.dmit.dto.UserResponseDto;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * The UserService interface provides methods for managing user data.
@@ -26,4 +27,12 @@ public interface UserService {
      * @return A List of UserResponseDto objects representing the users on the requested page.
      */
     List<UserResponseDto> findAllUsersPageableSortedBy(int page, int size, String sort);
+
+    /**
+     * Returns the user with specified ID.
+     *
+     * @param id User ID.
+     * @return UserResponseDto object representing the user.
+     */
+    UserResponseDto findUserById(UUID id);
 }
