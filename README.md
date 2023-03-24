@@ -5,7 +5,7 @@
 - [How to use](#how-to-use)
 
 ## About
-BootcampProject is a simple REST application. Application has 1 endpoint for managing users. POST to add user. GET to retrieve user list. Endpoint address: http://localhost:8080/api/v1/users
+BootcampProject is a simple REST application.
 
 ## Technology stack
 **Java: 11**
@@ -34,3 +34,10 @@ Application properties can be changed with system environment variables:
 ```sh
 docker-compose up
 ```
+
+
+Application has 1 endpoint for managing users. POST to add user. GET to retrieve user list.
+
+Endpoint address: http://localhost:8080/api/v1/users
+
+Default user roles: 'Administrator', 'Sale User', 'Customer User', 'Secure API User'
