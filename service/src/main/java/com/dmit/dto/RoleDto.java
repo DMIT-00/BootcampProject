@@ -1,6 +1,5 @@
 package com.dmit.dto;
 
-import com.dmit.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
