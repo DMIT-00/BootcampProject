@@ -46,4 +46,25 @@ Endpoint arguments:
 - page=x - page number
 - size=y - page size
 
-Example: http://localhost:8080/api/v1/users?page=0&size=10
+Example of user list (will be empty if nothing is added): http://localhost:8080/api/v1/users?page=0&size=10
+
+Example of adding user with CURL:
+```sh
+curl --request POST \
+  --url http://localhost:8080/api/v1/users \
+  --header 'Content-Type: application/json' \
+  --data '{
+	"email": "john@mail.com",
+	"firstName": "John",
+	"lastName": "Doe",
+	"patronymic": "Pat",
+	"roles": [
+		{
+			"roleName": "Sale User"
+		},
+		{
+			"roleName": "Secure API User"
+		}
+	]
+}'
+```
