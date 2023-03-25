@@ -2,6 +2,7 @@
 
 - [About](#about)
 - [Technology stack](#technology-stack)
+- [How to build and run](#how-to-build-and-run)
 - [How to use](#how-to-use)
 
 ## About
@@ -16,8 +17,8 @@ BootcampProject is a simple REST application.
 
 **Additional:** Lombok, Mockito
 
-## How to use
-There are two ways to use application:
+## How to build and run
+There are two ways to run application:
 1) Without docker (requires installed Mysql):
 ```sh
 mvn clean install
@@ -35,9 +36,14 @@ Application properties can be changed with system environment variables:
 docker-compose up
 ```
 
-
-Application has 1 endpoint for managing users. POST to add user. GET to retrieve user list.
+## How to use
+Application has 1 endpoint for managing users. POST to add user. GET to retrieve user list. Endpoint uses pagination.
+By default, page size is 10. Default user roles: 'Administrator', 'Sale User', 'Customer User', 'Secure API User'.
 
 Endpoint address: http://localhost:8080/api/v1/users
 
-Default user roles: 'Administrator', 'Sale User', 'Customer User', 'Secure API User'
+Endpoint arguments: 
+- page=x - page number
+- size=y - page size
+
+Example: http://localhost:8080/api/v1/users?page=0&size=10
