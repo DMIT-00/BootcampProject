@@ -2,13 +2,16 @@ package com.dmit.service;
 
 import com.dmit.dto.UserRequestDto;
 import com.dmit.dto.UserResponseDto;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
 /**
  * The UserService interface provides methods for managing user data.
  */
+@Validated
 public interface UserService {
     /**
      * Adds a new user to the system.
@@ -16,7 +19,7 @@ public interface UserService {
      * @param userRequestDto The UserRequestDto object containing the user's data.
      * @return A UserResponseDto object representing the added user.
      */
-    UserResponseDto addUser(UserRequestDto userRequestDto);
+    UserResponseDto addUser(@Valid UserRequestDto userRequestDto);
 
     /**
      * Returns a page of users sorted by the given criteria.

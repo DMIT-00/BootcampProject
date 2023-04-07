@@ -7,7 +7,6 @@ import com.dmit.dto.UserResponseDto;
 import com.dmit.entity.Role;
 import com.dmit.entity.User;
 import com.dmit.exception.AlreadyExistsException;
-import com.dmit.exception.InvalidFieldException;
 import com.dmit.exception.NotFoundException;
 import com.dmit.mapper.UserRequestMapper;
 import com.dmit.mapper.UserResponseMapper;
@@ -19,13 +18,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@Service
 @Log4j2
+@Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class UserServiceImpl implements UserService {
     private final UserDao userDao;
@@ -34,27 +34,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserResponseDto addUser(UserRequestDto userRequestDto) {
-        if (userRequestDto.getEmail() == null || userRequestDto.getEmail().length() > 20 ||
-                !userRequestDto.getEmail().matches("^.+\\@.+\\..+$"))
-            throw new InvalidFieldException("Email error: email format a@b.c, 5-20 length!");
-
-        if (userRequestDto.getFirstName() == null || !userRequestDto.getFirstName().matches("^[a-zA-Z]{1,20}$"))
-            throw new InvalidFieldException("First name error: only latin letters, 1-20 length!");
-
-        if (userRequestDto.getLastName() == null || !userRequestDto.getLastName().matches("^[a-zA-Z]{1,40}$"))
-            throw new InvalidFieldException("Last name error: only latin letters, 1-40 length!");
-
-        if (userRequestDto.getPatronymic() == null || !userRequestDto.getPatronymic().matches("^[a-zA-Z]{1,40}$"))
-            throw new InvalidFieldException("Patronymic error: only latin letters, 1-40 length!");
-
+    public UserResponseDto addUser(@Valid UserRequestDto userRequestDto) {
         if (userDao.existsByEmail(userRequestDto.getEmail()))
             throw new AlreadyExistsException("Email error: already taken! Email: " + userRequestDto.getEmail());
 
         if (userRequestDto.getId() != null && userDao.existsById(userRequestDto.getId()))
             throw new AlreadyExistsException("Id error: already taken! Id: " + userRequestDto.getId());
-
-        // TODO: more checks?
 
         User user = UserRequestMapper.fromDto(userRequestDto);
 
