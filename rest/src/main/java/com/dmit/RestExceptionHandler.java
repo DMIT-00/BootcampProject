@@ -25,7 +25,16 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
             WebRequest request
     ) {
         log.error(exception.getMessage());
-        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+
+        String message;
+
+        if (exception.getFieldError() != null) {
+            message = exception.getFieldError().getDefaultMessage();
+        } else {
+            message = exception.getMessage();
+        }
+
+        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(NotFoundException.class)
